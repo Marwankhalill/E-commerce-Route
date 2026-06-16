@@ -1,0 +1,26 @@
+import express from "express";
+import dotenv from "dotenv";
+dotenv.config();
+
+import { dbConnection } from "./database/dbConnection.js";
+import { bootstrap } from "./src/modules/bootstrap.js";
+import { AppError } from "./src/utils/AppError.js";
+import { globalError } from "./src/middlewares/globalError.js";
+
+const app = express();
+const port = process.env.port;
+
+dbConnection();
+
+app.set("query parser", "extended");
+app.use(express.json());
+app.use("/uploads/", express.static("uploads"));
+
+bootstrap(app);
+
+app.use("/{*splat}", (req, res, next) => {
+  next(new AppError(`Route not found: ${req.originalUrl}`, 404));
+});
+app.use(globalError);
+app.get("/", (req, res) => res.send("Hello World!"));
+app.listen(port, () => console.log(`Example app listening on port ${port}!`));
