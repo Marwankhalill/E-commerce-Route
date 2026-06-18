@@ -1,8 +1,9 @@
+
 import { model, Schema, Types } from "mongoose";
 const schema = new Schema(
   {
     code: {
-      type: Number,
+      type: String,
       unique: true,
       required: true,
     },
