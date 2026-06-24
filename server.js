@@ -6,9 +6,11 @@ import { dbConnection } from "./database/dbConnection.js";
 import { bootstrap } from "./src/modules/bootstrap.js";
 import { AppError } from "./src/utils/AppError.js";
 import { globalError } from "./src/middlewares/globalError.js";
+import cors from "cors";
 
 const app = express();
 const port = process.env.port;
+app.use(cors());
 
 dbConnection();
 
