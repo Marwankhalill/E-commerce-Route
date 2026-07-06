@@ -9,6 +9,11 @@ import { globalError } from "./src/middlewares/globalError.js";
 import cors from "cors";
 import { asyncHandler } from "./src/utils/asyncHandler.js";
 
+// import swaggerUi from "swagger-ui-express";
+// import YAML from "yamljs";
+
+// const swaggerDocument = YAML.load("./openapi.yaml");
+
 const app = express();
 const port = process.env.port;
 app.use(cors());
@@ -23,7 +28,7 @@ app.post(
     let event = stripe.webhooks.constructEvent(
       req.body,
       sig,
-      whsec_fMI3ZebpjkvCQsRPovBmjsO2nulPGZqB,
+      process.env.STRIPE_WEBHOOK_SECRET,
     );
     let checkout;
     if (event.type == "checkout.session.completed") {
@@ -39,7 +44,7 @@ app.use(express.json());
 app.use("/uploads/", express.static("uploads"));
 
 bootstrap(app);
-
+// app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/{*splat}", (req, res, next) => {
   next(new AppError(`Route not found: ${req.originalUrl}`, 404));
 });

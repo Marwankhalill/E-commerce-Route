@@ -8,9 +8,11 @@ import {
 } from "./user.controller.js";
 import { checkEmail } from "../../middlewares/checkEmail.js";
 import { allowedTo, protectedRoutes } from "../auth/auth.controller.js";
-
+import orderRouter from "../order/order.routes.js";
 
 const userRouter = Router();
+
+userRouter.use("/:orderId/", orderRouter);
 
 userRouter
   .route("/")
