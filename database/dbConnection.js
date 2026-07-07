@@ -2,7 +2,9 @@ import mongoose from "mongoose";
 
 export const dbConnection = () => {
   mongoose
-    .connect("mongodb://127.0.0.1:27017/E-Commerce")
+    .connect(
+    process.env.DATABASE_URL,
+    )
     .then(() => {
       console.log("database connected successfully");
     })
@@ -10,4 +12,4 @@ export const dbConnection = () => {
       console.log("Database Error:", err);
     });
 };
-//"mongodb+srv://MarwanKhalil:rysrBJPVQZc7lHG9@e-commerce.nsucxfg.mongodb.net/E-Commerce"
+
