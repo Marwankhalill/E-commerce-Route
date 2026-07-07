@@ -15,6 +15,11 @@ import { Product } from "./database/models/product.model.js";
 import { User } from "./database/models/user.model.js";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
+// import swaggerUi from "swagger-ui-express";
+// import YAML from "yamljs";
+
+// const swaggerDocument = YAML.load("./openapi.yaml");
+
 const app = express();
 const port = process.env.PORT;
 app.use(cors());
@@ -48,6 +53,7 @@ app.post(
         totalOrderPrice: checkout.amount_total / 100,
         paymentType: "card",
         isPaid: true,
+        
       });
       await order.save();
       //4-increment sold & decrement stock
@@ -74,7 +80,7 @@ app.use(express.json());
 app.use("/uploads/", express.static("uploads"));
 
 bootstrap(app);
-
+// app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/{*splat}", (req, res, next) => {
   next(new AppError(`Route not found: ${req.originalUrl}`, 404));
 });
